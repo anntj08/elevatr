@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ElevatR</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #fcb69f, #ffecd2);
+      text-align: center;
+      padding-top: 100px;
+    }
+
+    h1 {
+      color: #d1416b;
+    }
+
+    input[type="text"] {
+      width: 300px;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      margin-bottom: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #e0777d;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #c75164;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Enter Your Career Goal</h1>
+  <input type="text" id="goalInput" placeholder="e.g. Data Analyst at Google" />
+  <br />
+  <button onclick="goToResults()">Show My Plan</button>
+
+  <script>
+    function goToResults() {
+      const goal = document.getElementById("goalInput").value.trim();
+      if (!goal) {
+        alert("Please enter a career goal!");
+        return;
+      }
+      const encodedGoal = encodeURIComponent(goal);
+      window.location.href = `results.html?goal=${encodedGoal}`;
+    }
+  </script>
+
+</body>
+</html>

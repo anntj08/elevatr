@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ElevatR - Your Path</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Open Sans', sans-serif;
+      background: linear-gradient(to bottom right, #ffecd2 0%, #fcb69f 100%);
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    h1 {
+      font-family: 'Montserrat', sans-serif;
+      margin-top: 30px;
+      color: #d1416b;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 30px;
+      padding: 20px;
+      max-width: 1200px;
+      width: 100%;
+    }
+
+    .card {
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      width: 300px;
+      text-align: left;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card h2 {
+      font-family: 'Montserrat', sans-serif;
+      color: #e0777d;
+      margin-top: 0;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .card ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .card li {
+      margin-bottom: 10px;
+      background: #f9f9f9;
+      padding: 8px;
+      border-radius: 5px;
+    }
+
+    .loading {
+      font-style: italic;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Your Personalized Career Plan</h1>
+
+<div class="container">
+  <div class="card">
+    <h2>Top Skills</h2>
+    <ul id="skills"><li class="loading">Loading skills...</li></ul>
+  </div>
+  <div class="card">
+    <h2>Best Resources</h2>
+    <ul id="resources"><li class="loading">Loading resources...</li></ul>
+  </div>
+  <div class="card">
+    <h2>Practice Projects</h2>
+    <ul id="projects"><li class="loading">Loading project ideas...</li></ul>
+  </div>
+</div>
+
+<script>
+  const goal = new URLSearchParams(window.location.search).get('goal');
+
+  if (!goal) {
+    alert("No career goal provided.");
+  } else {
+    const apiUrl = `https://script.google.com/macros/s/AKfycbwnEApbFr3DJ9-1pdADwSOB3MCoO7iJoF4zdEg7hfa_ZIYQ-PZQSfGHGfBV8nJ5J7ph/exec?goal=${encodeURIComponent(goal)}`;
+
+    fetch(apiUrl)
+      .then(res => res.text())
+      .then(text => {
+        const jsonText = text.match(/\{[\s\S]*\}/)?.[0]; // Extract just the JSON block
+        const data = JSON.parse(jsonText);
+
+        document.getElementById("skills").innerHTML = data.skills.map(skill => `<li>${skill}</li>`).join('');
+        document.getElementById("resources").innerHTML = data.resources.map(res => `<li>${res}</li>`).join('');
+        document.getElementById("projects").innerHTML = data.projects.map(proj => `<li>${proj}</li>`).join('');
+      })
+      .catch(err => {
+        console.error(err);
+        document.querySelector(".container").innerHTML = "<p>Something went wrong. Please try again later.</p>";
+      });
+  }
+</script>
+
+</body>
+</html>
